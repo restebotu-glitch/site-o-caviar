@@ -1,0 +1,259 @@
+{
+  "articles": [
+    {
+      "id": 1,
+      "nom": "Poulet frit ",
+      "prix": 7777,
+      "categorie": "plats",
+      "description": "Modifié via interface admin (test)",
+      "image": "/uploads/recipe-1771609677684-267650477.png"
+    },
+    {
+      "id": 3,
+      "nom": "Poulet sauté",
+      "prix": 3600,
+      "categorie": "plats",
+      "description": "Poulet modifié",
+      "image": "/uploads/recipe-1771619165433-105506347.jpg"
+    },
+    {
+      "id": 5,
+      "nom": "Poisson frit",
+      "prix": 4000,
+      "categorie": "plats",
+      "description": "Poisson frit croustillant, parfait pour les amateurs.",
+      "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80"
+    },
+    {
+      "id": 6,
+      "nom": "Mouton sauté",
+      "prix": 4000,
+      "categorie": "plats",
+      "description": "Morceaux de mouton sautés aux herbes et épices.",
+      "image": "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80"
+    },
+    {
+      "id": 7,
+      "nom": "Pintade sautée",
+      "prix": 4000,
+      "categorie": "plats",
+      "description": "Pintade tendre sautée, saveur authentique.",
+      "image": "data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2220%22 fill=%22%23999%22%3EPintade%3C/text%3E%3C/svg%3E"
+    },
+    {
+      "id": 8,
+      "nom": "Pintade frit",
+      "prix": 4000,
+      "categorie": "plats",
+      "description": "Pintade frite, croustillante et savoureuse.",
+      "image": "https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=400&q=80"
+    },
+    {
+      "id": 9,
+      "nom": "Brochette d'escargot",
+      "prix": 2500,
+      "categorie": "plats",
+      "description": "Brochettes d'escargots grillés, spécialité de la maison.",
+      "image": "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80"
+    },
+    {
+      "id": 15,
+      "nom": "Igname",
+      "prix": 1000,
+      "categorie": "garnitures",
+      "description": "Tranches d'igname frites ou bouillies.",
+      "image": "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80"
+    },
+    {
+      "id": 16,
+      "nom": "Jus",
+      "prix": 800,
+      "categorie": "boissons",
+      "description": "Jus naturels et frais, pour tous les goûts.",
+      "image": "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80"
+    },
+    {
+      "id": 17,
+      "nom": "Sucreries",
+      "prix": 800,
+      "categorie": "boissons",
+      "description": "Boissons sucrées et rafraîchissantes.",
+      "image": "https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=400&q=80"
+    },
+    {
+      "id": 18,
+      "nom": "Café",
+      "prix": 800,
+      "categorie": "boissons",
+      "description": "Café chaud ou glacé, pour une pause gourmande.",
+      "image": "https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=400&q=80"
+    },
+    {
+      "id": 19,
+      "nom": "Thé",
+      "prix": 800,
+      "categorie": "boissons",
+      "description": "Thé parfumé, servi chaud ou froid.",
+      "image": "/uploads/recipe-1774712325299-470621817.png"
+    },
+    {
+      "id": 20,
+      "nom": "Boissons énergisantes",
+      "prix": 1200,
+      "categorie": "boissons",
+      "description": "Pour un regain d'énergie à tout moment.",
+      "image": "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80"
+    },
+    {
+      "id": 21,
+      "nom": "FRUT",
+      "categorie": "garnitures",
+      "prix": 50000,
+      "description": "POULE",
+      "image": "/uploads/recipe-1771608368754-4839346.jpeg"
+    },
+    {
+      "id": 22,
+      "nom": "TestUpdate",
+      "categorie": "plats",
+      "prix": 1234,
+      "description": "desc",
+      "image": "/uploads/recipe-1771619132730-476911823.jpg"
+    },
+    {
+      "id": 23,
+      "nom": "TestUpload",
+      "categorie": "plats",
+      "prix": 1000,
+      "description": "",
+      "image": "/uploads/recipe-1771626027455-704791499.png"
+    },
+    {
+      "id": 24,
+      "nom": "Puppeteer Test Dish UPDATED",
+      "categorie": "plats",
+      "prix": 1111,
+      "description": "Modifié via test",
+      "image": "/uploads/recipe-1771626360994-212985324.png"
+    },
+    {
+      "id": 25,
+      "nom": "Puppeteer Test Dish",
+      "categorie": "plats",
+      "prix": 2000,
+      "description": "Test upload via Puppeteer",
+      "image": "/uploads/recipe-1771626386722-943656141.png"
+    },
+    {
+      "id": 26,
+      "nom": "Poulet Mayo",
+      "categorie": "plats",
+      "prix": 5000,
+      "description": "poulet",
+      "image": "/uploads/recipe-1771626909962-6978843.webp"
+    },
+    {
+      "id": 27,
+      "nom": "KILI",
+      "categorie": "plats",
+      "prix": 2000,
+      "description": "VOLEUSE",
+      "image": "/uploads/recipe-1771681445345-419421239.png"
+    },
+    {
+      "id": 28,
+      "nom": "Poulet let",
+      "categorie": "plats",
+      "prix": 4500,
+      "fraisLivraison": 1000,
+      "description": "Poulet tendre",
+      "image": "/uploads/recipe-1774589872577-387217703.png"
+    }
+  ],
+  "parametres": {
+    "fraisLivraison": 1200,
+    "nomRestaurant": "O'CAVIAR",
+    "adresse": "RUE L100, COCODY, ABIDJAN, Côte d'Ivoire",
+    "telephone": "07 18 18 65 65",
+    "email": "ooocaviar9@gmail.ci",
+    "devise": "FCFA",
+    "quartiersLivraison": [
+      {
+        "id": 1,
+        "nom": "Cocody",
+        "frais": 1000
+      },
+      {
+        "id": 2,
+        "nom": "Plateau",
+        "frais": 1500
+      },
+      {
+        "id": 3,
+        "nom": "Yopougon",
+        "frais": 2000
+      },
+      {
+        "id": 4,
+        "nom": "Treichville",
+        "frais": 1800
+      },
+      {
+        "id": 5,
+        "nom": "Marcory",
+        "frais": 1500
+      },
+      {
+        "id": 6,
+        "nom": "Attécoubé",
+        "frais": 2000
+      },
+      {
+        "id": 7,
+        "nom": "Abobo",
+        "frais": 2500
+      },
+      {
+        "id": 8,
+        "nom": "Adjamé",
+        "frais": 2000
+      },
+      {
+        "id": 9,
+        "nom": "Kaakoupé",
+        "frais": 2500
+      },
+      {
+        "id": 10,
+        "nom": "Port-Bouët",
+        "frais": 2200
+      },
+      {
+        "id": 11,
+        "nom": "Vridi",
+        "frais": 2800
+      },
+      {
+        "id": 12,
+        "nom": "Koumassi",
+        "frais": 1800
+      },
+      {
+        "id": 13,
+        "nom": "Bingerville",
+        "frais": 2500
+      },
+      {
+        "id": 14,
+        "nom": "Belelou",
+        "frais": 2000
+      },
+      {
+        "id": 15,
+        "nom": "Melvinn",
+        "frais": 2222
+      }
+    ],
+    "serviceOpen": true
+  }
+}

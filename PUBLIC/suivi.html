@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivi Commande - O'CAVIAR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <style>
+        :root {
+            --main: #22223b;
+            --accent: #f2e9e4;
+            --gold: #ffd700;
+            --white: #fff;
+            --shadow: 0 4px 24px rgba(0,0,0,0.10);
+            --success: #4caf50;
+            --error: #f44336;
+        }
+        
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--main) 0%, rgba(34, 34, 59, 0.9) 100%);
+            margin: 0;
+            padding: 20px;
+            color: var(--main);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            color: var(--gold);
+            margin-bottom: 40px;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        .search-section {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+        
+        .search-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .search-form input {
+            padding: 12px 20px;
+            border: 2px solid var(--main);
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: 'Montserrat', Arial, sans-serif;
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .search-form button {
+            padding: 12px 30px;
+            background: var(--gold);
+            color: var(--main);
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+        
+        .search-form button:hover {
+            background: var(--main);
+            color: var(--gold);
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .alert.error {
+            background: #ffebee;
+            color: var(--error);
+            border-left: 5px solid var(--error);
+        }
+        
+        .alert.success {
+            background: #e8f5e9;
+            color: var(--success);
+            border-left: 5px solid var(--success);
+        }
+        
+        .order-details {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            display: none;
+        }
+        
+        .order-details.visible {
+            display: block;
+        }
+        
+        .order-header {
+            border-bottom: 3px solid var(--gold);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .order-id {
+            font-size: 0.9em;
+            color: #888;
+            margin-top: 5px;
+        }
+        
+        .status-timeline {
+            position: relative;
+            margin: 40px 0;
+        }
+        
+        .status-step {
+            display: flex;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .status-step::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 50px;
+            width: 2px;
+            height: 60px;
+            background: #ddd;
+        }
+        
+        .status-step:last-child::before {
+            display: none;
+        }
+        
+        .status-circle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #ddd;
+            border: 3px solid var(--main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--main);
+            flex-shrink: 0;
+            z-index: 1;
+            position: relative;
+        }
+        
+        .status-step.completed .status-circle {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+        
+        .status-step.active .status-circle {
+            background: var(--gold);
+            border-color: var(--main);
+            color: var(--main);
+            font-size: 1.3em;
+        }
+        
+        .status-info {
+            margin-left: 20px;
+            flex: 1;
+        }
+        
+        .status-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: var(--main);
+        }
+        
+        .status-time {
+            font-size: 0.9em;
+            color: #888;
+            margin-top: 5px;
+        }
+        
+        .order-items {
+            margin-top: 30px;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+        
+        .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-name {
+            font-weight: bold;
+            flex: 1;
+        }
+        
+        .item-qty {
+            color: #888;
+            margin: 0 15px;
+        }
+        
+        .item-price {
+            font-weight: bold;
+        }
+        
+        .totals {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid var(--gold);
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+        
+        .total-row.main {
+            font-weight: bold;
+            color: var(--gold);
+            font-size: 1.3em;
+            margin-top: 15px;
+        }
+        
+        .client-info {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 5px 0;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            color: var(--main);
+        }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background: var(--main);
+            color: var(--gold);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: #111;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍽️ Suivi de Commande</h1>
+            <p>O'CAVIAR - Restaurant Africain</p>
+        </header>
+        <div style="text-align:center;margin-bottom:18px;">
+            <a class="back-btn" href="/">← Accueil</a>
+        </div>
+        
+        <div class="search-section">
+            <form class="search-form" id="search-form">
+                <input type="text" id="order-id" placeholder="Entrez votre numéro de commande..." required>
+                <button type="submit">🔍 Rechercher</button>
+            </form>
+            <div id="alert-message"></div>
+            <div id="search-results" style="margin-top:12px;"></div>
+        </div>
+        
+        <div id="order-details" class="order-details">
+            <div class="order-header">
+                <h2 id="client-name">Nom du Client</h2>
+                <p class="order-id">Numéro de commande: <strong id="order-number">-</strong></p>
+                <p class="order-id">Date: <strong id="order-date">-</strong></p>
+            </div>
+            <!-- Banner pour retrait au comptoir -->
+            <div id="pickup-banner" class="alert success" style="display:none;margin-bottom:20px;font-size:1.1em;">
+                ✅ Votre commande est prête — vous pouvez la retirer au restaurant.
+            </div>
+            <!-- Banner pour confirmation de récupération -->
+            <div id="received-banner" class="alert success" style="display:none;margin-bottom:20px;font-size:1.1em;">
+                ✅ La commande a été marquée comme récupérée. Merci !
+            </div>
+            
+            <div class="status-timeline">
+                <div class="status-step" id="step-waiting">
+                    <div class="status-circle">✓</div>
+                    <div class="status-info">
+                        <div class="status-title">En attente de préparation</div>
+                        <div class="status-time">Votre commande a été reçue et est en cours de traitement</div>
+                    </div>
+                </div>
+                
+                <div class="status-step" id="step-preparing">
+                    <div class="status-circle">👨‍🍳</div>
+                    <div class="status-info">
+                        <div class="status-title">En préparation</div>
+                        <div class="status-time" id="time-preparing">-</div>
+                    </div>
+                </div>
+                
+                <div class="status-step" id="step-ready">
+                    <div class="status-circle">📦</div>
+                    <div class="status-info">
+                        <div class="status-title">Prêt à partir</div>
+                        <div class="status-time" id="time-ready">-</div>
+                    </div>
+                </div>
+                
+                <div class="status-step" id="step-delivery">
+                    <div class="status-circle">🚗</div>
+                    <div class="status-info">
+                        <div class="status-title">En cours de livraison</div>
+                        <div class="status-time" id="time-delivery">-</div>
+                    </div>
+                </div>
+                
+                <div class="status-step" id="step-delivered">
+                    <div class="status-circle">✓</div>
+                    <div class="status-info">
+                        <div class="status-title">Livré</div>
+                        <div class="status-time" id="time-delivered">-</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="order-items">
+                <h3>Articles commandés</h3>
+                <div id="items-list"></div>
+            </div>
+
+                <div id="client-map-container" style="margin-top:20px;">
+                    <h3>Position</h3>
+                    <div id="client-map" style="width:100%;height:300px;border-radius:8px;overflow:hidden;display:none;"></div>
+                </div>
+            
+            <div class="totals">
+                <div class="total-row">
+                    <span>Sous-total:</span>
+                    <span id="subtotal">- FCFA</span>
+                </div>
+                <div class="total-row">
+                    <span>Frais de livraison:</span>
+                    <span id="delivery-fee">- FCFA</span>
+                </div>
+                <div class="total-row main">
+                    <span>Total:</span>
+                    <span id="total">-</span>
+                </div>
+            </div>
+            
+            <div class="client-info">
+                <div class="info-row">
+                    <span class="info-label">Téléphone:</span>
+                    <span id="client-phone">-</span>
+                </div>
+                <div class="info-row" style="display:none;">
+                    <span class="info-label">Email:</span>
+                    <span id="client-email">-</span>
+                </div>
+                <div class="info-row" style="display:none;">
+                    <span class="info-label">Type de livraison:</span>
+                    <span id="delivery-type">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Adresse:</span>
+                    <span id="client-address">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Commune:</span>
+                    <span id="client-commune">-</span>
+                </div>
+            </div>
+            
+            <button class="back-btn" onclick="resetSearch()">← Nouvelle recherche</button>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE = window.location.origin;
+        
+        const STATUS_STEPS = {
+            'En attente': 'waiting',
+            'En préparation': 'preparing',
+            'Prêt à partir': 'ready',
+            'En livraison': 'delivery',
+            'En cours de livraison': 'delivery',
+            'Livré': 'delivered'
+        };
+        
+        function showAlert(message, type) {
+            const alert = document.getElementById('alert-message');
+            alert.textContent = message;
+            alert.className = 'alert ' + type;
+        }
+        
+        function resetSearch() {
+            document.getElementById('order-id').value = '';
+            document.getElementById('order-details').classList.remove('visible');
+            document.getElementById('alert-message').textContent = '';
+            document.getElementById('order-id').focus();
+            stopPolling();
+        }
+        
+        document.getElementById('search-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const qInput = document.getElementById('order-id');
+            const query = qInput.value.trim();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const resultsEl = document.getElementById('search-results');
+
+            resultsEl.innerHTML = '';
+            if (!query) {
+                showAlert('❌ Veuillez entrer un numéro de commande, téléphone, email ou nom', 'error');
+                return;
+            }
+
+            // Indicateur de chargement simple
+            btn.disabled = true;
+            const originalBtnText = btn.textContent;
+            btn.textContent = 'Recherche...';
+
+            try {
+                // Appel flexible: chercher parmi toutes les commandes
+                const resp = await fetch(`${API_BASE}/api/orders?q=${encodeURIComponent(query)}`);
+                const data = await resp.json();
+
+                // data is expected to be an array (0..N)
+                if (!data || (Array.isArray(data) && data.length === 0)) {
+                    showAlert('❌ Aucune commande trouvée pour « ' + query + ' »', 'error');
+                    btn.disabled = false;
+                    btn.textContent = originalBtnText;
+                    return;
+                }
+
+                // If the server returned a single object (compat), normalize
+                const results = Array.isArray(data) ? data : (data.order ? [data.order] : []);
+
+                if (results.length === 1) {
+                    const order = results[0];
+                    // Save last ID for auto-load
+                    try { localStorage.setItem('lastOrderId', String(order.id)); } catch(e){}
+                    displayOrder(order);
+                    startPolling(order.id);
+                } else {
+                    // Afficher une liste de correspondances cliquables
+                    resultsEl.innerHTML = '<div style="background:#fff;padding:10px;border-radius:8px;box-shadow:var(--shadow);"><strong>Plusieurs résultats trouvés — cliquez pour afficher :</strong></div>';
+
+                    // build list
+                    const listWrap = document.createElement('div');
+                    listWrap.style.marginTop = '8px';
+                    listWrap.style.display = 'grid';
+                    listWrap.style.gap = '8px';
+
+                    results.forEach(o => {
+                        const card = document.createElement('button');
+                        card.type = 'button';
+                        card.className = 'back-btn';
+                        card.style.background = '#fff';
+                        card.style.color = 'var(--main)';
+                        card.style.border = '1px solid #eee';
+                        card.style.textAlign = 'left';
+                        card.style.padding = '10px';
+                        card.textContent = `#${o.id} — ${o.client && o.client.nom ? o.client.nom : 'Client'} — ${o.client && o.client.telephone ? o.client.telephone : ''}`;
+                        card.onclick = () => {
+                            try { localStorage.setItem('lastOrderId', String(o.id)); } catch(e){}
+                            displayOrder(o);
+                            startPolling(o.id);
+                            resultsEl.innerHTML = '';
+                        };
+                        listWrap.appendChild(card);
+                    });
+
+                    resultsEl.appendChild(listWrap);
+                }
+
+                // Clear any previous alerts
+                document.getElementById('alert-message').textContent = '';
+            } catch (err) {
+                console.error('Erreur recherche commande:', err);
+                showAlert('❌ Erreur serveur lors de la recherche', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalBtnText;
+            }
+        });
+        // Gestion du polling de suivi
+        let trackingInterval = null;
+
+        function stopPolling() {
+            if (trackingInterval) {
+                clearInterval(trackingInterval);
+                trackingInterval = null;
+            }
+        }
+
+        function startPolling(orderId) {
+            stopPolling();
+            trackingInterval = setInterval(async () => {
+                try {
+                    const resp = await fetch(`${API_BASE}/api/order/${orderId}`);
+                    const d = await resp.json();
+                    if (d && d.success) {
+                        displayOrder(d.order);
+                        // Si la commande est livrée ou retirée, afficher message et arrêter le polling
+                        const finishedStatuses = ['Livré', 'livré', 'Retiré', 'retiré'];
+                        if (finishedStatuses.includes(d.order.statut)) {
+                            // Montrer une alerte globale pour informer le client
+                            showAlert('✅ Votre commande a été marquée comme récupérée.', 'success');
+                            stopPolling();
+                        }
+                    }
+                } catch (err) {
+                    console.warn('Erreur polling suivi:', err);
+                }
+            }, 10000); // toutes les 10s
+        }
+
+        // Si un dernier numéro de commande existe en localStorage, charger automatiquement
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const last = localStorage.getItem('lastOrderId');
+                if (last) {
+                    document.getElementById('order-id').value = last;
+                    const response = await fetch(`${API_BASE}/api/order/${last}`);
+                    const data = await response.json();
+                    if (data && data.success) {
+                        displayOrder(data.order);
+                        startPolling(last);
+                    }
+                }
+            } catch (err) {
+                console.warn('Impossible de charger la commande depuis localStorage:', err);
+            }
+        });
+        
+        function displayOrder(order) {
+            // Afficher les infos client
+            document.getElementById('client-name').textContent = order.client.nom;
+            document.getElementById('order-number').textContent = order.id;
+            document.getElementById('order-date').textContent = order.date;
+            
+            // Afficher les détails
+            document.getElementById('client-phone').textContent = order.client.telephone;
+            document.getElementById('client-email').textContent = order.client.email;
+            document.getElementById('delivery-type').textContent = order.livraison === 'livraison' ? 'Livraison à domicile' : 'Retrait au restaurant';
+            document.getElementById('client-address').textContent = order.adresse;
+            document.getElementById('client-commune').textContent = order.commune;
+            
+            // Afficher les articles
+            let itemsHtml = '';
+            for (const [name, qty] of Object.entries(order.panier)) {
+                itemsHtml += `
+                    <div class="item">
+                        <span class="item-name">${name}</span>
+                        <span class="item-qty">×${qty}</span>
+                    </div>
+                `;
+            }
+            document.getElementById('items-list').innerHTML = itemsHtml;
+            
+            // Afficher les totaux
+            document.getElementById('subtotal').textContent = order.subtotal + ' FCFA';
+            document.getElementById('delivery-fee').textContent = order.fraisLivraison + ' FCFA';
+            document.getElementById('total').textContent = order.total + ' FCFA';
+            
+            // Gérer le timeline de statut
+            updateStatusTimeline(order.statut, order.derniereMajStatut, order.livraison);
+
+            // Afficher un bandeau clair si c'est un retrait et que la commande est prête
+            const pickupBanner = document.getElementById('pickup-banner');
+            const readyStatuses = ['Prêt à partir', 'Prêt'];
+            if (order.livraison !== 'livraison' && readyStatuses.includes(order.statut)) {
+                pickupBanner.style.display = 'block';
+            } else {
+                pickupBanner.style.display = 'none';
+            }
+            
+            // Afficher la section des détails
+            document.getElementById('order-details').classList.add('visible');
+            document.getElementById('alert-message').textContent = '';
+
+            // Afficher la position sur la carte si disponible
+            if (order.position && order.position.latitude && order.position.longitude) {
+                const lat = parseFloat(order.position.latitude);
+                const lng = parseFloat(order.position.longitude);
+                const mapEl = document.getElementById('client-map');
+                mapEl.style.display = 'block';
+
+                // Nettoyer carte précédente
+                if (window.clientMap) {
+                    try { window.clientMap.remove(); } catch(e) { /* ignore */ }
+                    window.clientMap = null;
+                }
+
+                setTimeout(() => {
+                    try {
+                        window.clientMap = L.map('client-map').setView([lat, lng], 15);
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            maxZoom: 19,
+                            attribution: '&copy; OpenStreetMap contributors'
+                        }).addTo(window.clientMap);
+                        const marker = L.marker([lat, lng]).addTo(window.clientMap);
+                        marker.bindPopup(`<strong>${order.client.nom}</strong><br>${order.adresse || ''}`).openPopup();
+                    } catch (err) {
+                        console.error('Erreur carte client:', err);
+                    }
+                }, 150);
+            }
+        }
+        
+        function updateStatusTimeline(currentStatus, lastUpdate, livraisonType) {
+            // Réinitialiser tous les statuts
+            document.querySelectorAll('.status-step').forEach(step => {
+                step.classList.remove('completed', 'active');
+            });
+            
+            const effectiveStatus = (currentStatus === 'En livraison') ? 'En cours de livraison' : currentStatus;
+            const statusOrder = ['En attente', 'En préparation', 'Prêt à partir', 'En cours de livraison', 'Livré'];
+            const currentIndex = statusOrder.indexOf(effectiveStatus);
+            
+            // Marquer les étapes complétées et l'étape active
+            for (let i = 0; i <= currentIndex; i++) {
+                const stepId = STATUS_STEPS[statusOrder[i]];
+                const step = document.getElementById('step-' + stepId);
+                if (i < currentIndex) {
+                    step.classList.add('completed');
+                } else {
+                    step.classList.add('active');
+                }
+                
+                // Ajuster le libellé de l'étape 'ready' pour le retrait
+                if (statusOrder[i] === 'Prêt à partir') {
+                    const titleEl = step.querySelector('.status-title');
+                    const infoEl = step.querySelector('.status-time');
+                    if (livraisonType && livraisonType !== 'livraison') {
+                        titleEl.textContent = 'Prêt pour retrait';
+                        infoEl.textContent = 'Votre commande est disponible au comptoir';
+                    } else {
+                        titleEl.textContent = 'Prêt à partir';
+                        infoEl.textContent = lastUpdate || '-';
+                    }
+                }
+
+                // Ajouter l'heure de mise à jour si disponible (pour les autres étapes ou si fourni)
+                if (lastUpdate && i === currentIndex && statusOrder[i] !== 'Prêt à partir') {
+                    const timeEl = step.querySelector('.status-time');
+                    timeEl.textContent = lastUpdate || '-';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

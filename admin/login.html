@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Admin - O'CAVIAR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main: #22223b;
+            --accent: #f2e9e4;
+            --gold: #ffd700;
+            --white: #fff;
+            --error: #f44336;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--main) 0%, #4a4e69 100%);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: var(--main);
+        }
+
+        .login-container {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            margin: 0 0 20px 0;
+            color: var(--main);
+            font-size: 1.8em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: 'Montserrat', Arial, sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: var(--gold);
+            color: var(--main);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #e6c200;
+        }
+
+        #message {
+            margin-top: 15px;
+            color: var(--error);
+            font-weight: bold;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>🔐 Administration</h2>
+    <form id="loginForm">
+        <div class="form-group">
+            <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+        </div>
+        <div class="form-group">
+            <input type="password" id="password" placeholder="Mot de passe" required>
+        </div>
+        <button type="submit">Se connecter</button>
+    </form>
+    <p id="message"></p>
+</div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const messageEl = document.getElementById('message');
+    
+    // Réinitialiser le message d'erreur
+    messageEl.style.display = 'none';
+    messageEl.innerText = '';
+
+    try {
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            sessionStorage.setItem('admin_token', data.token);
+            sessionStorage.setItem('adminAuth', '1');
+            window.location.href = "/admin/dashboard.html";
+        } else {
+            messageEl.innerText = data.message;
+            messageEl.style.display = 'block';
+        }
+
+    } catch (err) {
+        console.error(err);
+        messageEl.innerText = "Erreur de connexion au serveur.";
+        messageEl.style.display = 'block';
+    }
+});
+</script>
+
+</body>
+</html>

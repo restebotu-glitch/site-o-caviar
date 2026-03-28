@@ -1,0 +1,12 @@
+node_modules/
+.env
+.DS_Store
+npm-debug.log*
+
+# Fichiers de données sensibles (Ne JAMAIS mettre sur GitHub)
+commandes.json
+admins.json
+
+# Ne pas envoyer les reçus des clients
+uploads/*
+!uploads/.gitkeep

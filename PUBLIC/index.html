@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O'CAVIAR - Restaurant Africain</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main: #22223b;
+            --accent: #f2e9e4;
+            --highlight: #c9ada7;
+            --gold: #ffd700;
+            --white: #fff;
+            --shadow: 0 4px 24px rgba(0,0,0,0.10);
+        }
+
+        @keyframes shimmerGold {
+            0% {
+                text-shadow: 2px 2px 8px #0008, 0 0 20px rgba(255,215,0,0);
+            }
+            50% {
+                text-shadow: 2px 2px 8px #0008, 0 0 40px rgba(255,215,0,0.6);
+            }
+            100% {
+                text-shadow: 2px 2px 8px #0008, 0 0 20px rgba(255,215,0,0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes horizontalScroll {
+            0% {
+                transform: translateX(100vw);
+            }
+            100% {
+                transform: translateX(-100vw);
+            }
+        }
+
+        .scrolling-text {
+            display: inline-block;
+            animation: horizontalScroll 12s linear infinite;
+            white-space: nowrap;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--gold);
+            margin: 8px 0;
+        }
+
+        .scrolling-text-container {
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+        }
+        
+        * { box-sizing: border-box; }
+        
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: linear-gradient(120deg, #f2e9e4 0%, #fff 100%);
+            color: var(--main);
+        }
+        
+        /* NAVIGATION - MOBILE FIRST */
+        nav {
+            background: var(--main);
+            color: var(--white);
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 4px;
+            font-size: 0.75em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            flex-wrap: wrap;
+            overflow-x: auto;
+        }
+        
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            padding: 4px 10px;
+            border-radius: 20px;
+            transition: background 0.2s;
+            white-space: nowrap;
+            font-size: 0.9em;
+        }
+        
+        nav a:hover {
+            background: var(--highlight);
+            color: var(--main);
+        }
+        
+        @media (min-width: 600px) {
+            nav {
+                gap: 40px;
+                padding: 18px 0;
+                font-size: 1.1em;
+            }
+            
+            nav a {
+                padding: 6px 18px;
+                font-size: 1em;
+            }
+        }
+        
+        /* HEADER - MOBILE FIRST */
+        header {
+            background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            color: var(--white);
+            text-align: center;
+            padding: 30px 16px 20px 16px;
+            position: relative;
+        }
+        
+        header::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0; top: 0; bottom: 0;
+            background: rgba(34,34,59,0.65);
+            z-index: 1;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        header h1 {
+            font-size: 1.8em;
+            margin: 0 0 10px 0;
+            letter-spacing: 1px;
+            color: var(--gold);
+            animation: shimmerGold 2s ease-in-out infinite, scaleIn 0.6s ease-out 0.3s backwards;
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        header p {
+            font-size: 0.9em;
+            margin: 0 0 8px 0;
+        }
+        
+        @media (min-width: 600px) {
+            header {
+                padding: 60px 20px 40px 20px;
+            }
+            
+            header h1 {
+                font-size: 3.2em;
+                margin: 0 0 18px 0;
+                letter-spacing: 3px;
+            }
+            
+            header p {
+                font-size: 1.4em;
+                margin: 0 0 18px 0;
+            }
+        }
+        
+        /* CTA BUTTON - MOBILE FIRST */
+        .cta-btn {
+            background: var(--gold);
+            color: var(--main);
+            border: none;
+            border-radius: 30px;
+            padding: 10px 24px;
+            font-size: 0.85em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: var(--shadow);
+            transition: background 0.2s, color 0.2s;
+        }
+        
+        .cta-btn:hover {
+            background: var(--main);
+            color: var(--gold);
+        }
+        
+        @media (min-width: 600px) {
+            .cta-btn {
+                padding: 14px 38px;
+                font-size: 1.1em;
+                margin-top: 18px;
+            }
+        }
+        
+        /* MAIN CONTENT - MOBILE FIRST */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 8px 0 8px;
+        }
+        
+        @media (min-width: 600px) {
+            main {
+                padding: 40px 16px 0 16px;
+            }
+        }
+        
+        section {
+            margin-bottom: 24px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        @media (min-width: 600px) {
+            section {
+                margin-bottom: 60px;
+            }
+        }
+        
+        h2 {
+            color: var(--main);
+            font-size: 1.3em;
+            margin-bottom: 12px;
+            border-left: 5px solid var(--gold);
+            padding-left: 10px;
+            animation: slideInLeft 0.5s ease-out;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        h2:hover {
+            transform: translateX(4px);
+            border-left-color: #ffc700;
+        }
+        
+        @media (min-width: 600px) {
+            h2 {
+                font-size: 2.1em;
+                margin-bottom: 24px;
+                border-left: 8px solid var(--gold);
+                padding-left: 16px;
+            }
+        }
+        
+        /* CHEF SECTION - MOBILE FIRST */
+        .chef-section {
+            padding: 20px 8px;
+            background: #fff;
+        }
+        
+        .chef-container {
+            max-width: 1100px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .chef-image img {
+            width: 100%;
+            max-width: 200px;
+            border-radius: 12px;
+            border: 5px solid #ffd700;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .chef-text {
+            flex: 1;
+            min-width: 100%;
+        }
+        
+        .chef-text h2 {
+            border-left: none;
+            padding-left: 0;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        
+        .chef-text p {
+            font-size: 0.85em;
+            line-height: 1.5;
+            color: #555;
+            margin: 0 0 8px 0;
+        }
+        
+        @media (min-width: 600px) {
+            .chef-section {
+                padding: 70px 20px;
+            }
+            
+            .chef-container {
+                gap: 50px;
+            }
+            
+            .chef-image img {
+                width: 350px;
+                max-width: 100%;
+                border-radius: 20px;
+            }
+            
+            .chef-text {
+                flex: 1;
+                min-width: auto;
+            }
+            
+            .chef-text h2 {
+                font-size: 2.5em;
+                margin-bottom: 15px;
+            }
+            
+            .chef-text p {
+                font-size: 1.1em;
+                line-height: 1.7;
+                margin: 0 0 15px 0;
+            }
+        }
+        
+        /* MENU GRID - MOBILE FIRST (2 colonnes) */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            padding: 0;
+            width: 100%;
+        }
+        
+        @media (min-width: 600px) {
+            .menu-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+                padding: 10px;
+            }
+        }
+        
+        @media (min-width: 900px) {
+            .menu-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 32px;
+                padding: 10px;
+            }
+        }
+        
+        /* CARD - MOBILE FIRST */
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 340px;
+            max-height: 380px;
+            overflow: hidden;
+            animation: fadeIn 0.35s ease-out;
+            position: relative;
+        }
+
+        .menu-grid .card {
+            height: 100%;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent, rgba(255,215,0,0.05));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            border-radius: 12px;
+            z-index: 1;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+        
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+        
+        .image-container {
+            width: 100%;
+            height: 140px;
+            min-height: 140px;
+            max-height: 140px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .image-container img,
+        .article-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 12px;
+            border: 5px solid #ffd700;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .card:hover .image-container img,
+        .card:hover .article-image {
+            transform: scale(1.08);
+        }
+        
+        .card-content,
+        .article-content {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+            gap: 6px;
+            min-height: 180px;
+            animation: fadeInUp 0.4s ease-out 0.1s backwards;
+            position: relative;
+            z-index: 2;
+        }
+
+        .article-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .article-meta {
+            transform: translateY(-2px);
+        }
+
+        .card h3 {
+            margin: 5px 0;
+            color: var(--main);
+            font-size: 1.05em;
+            line-height: 1.3;
+            transition: color 0.3s ease;
+        }
+
+        .card:hover h3 {
+            color: var(--gold);
+        }
+
+        .card p {
+            color: #555;
+            font-size: 0.86em;
+            margin: 5px 0;
+            flex: 0;
+            transition: color 0.3s ease;
+        }
+
+        .card:hover p {
+            color: #333;
+        }
+
+        .price,
+        .prix {
+            margin-top: 8px;
+            font-weight: bold;
+            color: #22223b;
+            font-size: 1.1em;
+            align-self: flex-start;
+            transition: color 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .card:hover .prix,
+        .card:hover .price {
+            color: var(--gold);
+            transform: scale(1.05);
+        }
+
+        .add-to-cart {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: var(--gold);
+            color: var(--main);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+        }
+
+        .add-to-cart:hover {
+            transform: scale(1.06);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .add-to-cart.added {
+            transform: scale(0.88);
+            background: #f4b400;
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.7);
+        }
+
+        .article-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .card h3 {
+            margin: 5px 0;
+            color: var(--main);
+            font-size: 1.05em;
+            line-height: 1.3;
+        }
+
+        .card p {
+            color: #555;
+            font-size: 0.86em;
+            margin: 5px 0;
+            flex: 0;
+        }
+
+        .price,
+        .prix {
+            margin-top: 8px;
+            font-weight: bold;
+            color: #22223b;
+            font-size: 1.1em;
+            align-self: flex-start;
+        }
+        
+        /* styles for card meta */
+        .card h3 {
+            margin: 8px 0 6px 0;
+            font-size: 1.05em;
+            color: var(--main);
+            line-height: 1.3;
+        }
+        
+        .card p {
+            color: #555;
+            font-size: 0.86em;
+            margin: 0 0 10px 0;
+            flex: 1;
+        }
+        
+        @media (min-width: 600px) {
+            .card {
+                border-radius: 12px;
+                padding: 12px;
+            }
+            
+            .card:hover {
+                transform: translateY(-8px) scale(1.04);
+                box-shadow: 0 12px 32px rgba(0,0,0,0.13);
+            }
+            
+            .card h3 {
+                margin: 0 0 10px 0;
+                font-size: 1.2em;
+            }
+            
+            .card p {
+                font-size: 1em;
+                margin: 0;
+            }
+
+            #cart-btn {
+                position: relative;
+                width: auto;
+                height: auto;
+                padding: 10px 24px;
+                border-radius: 30px;
+                background: #ffd700;
+                color: #22223b;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                font-size: 1.2rem;
+                font-weight: bold;
+                text-decoration: none;
+                box-shadow: 0 6px 14px rgba(0,0,0,0.28);
+                border: 2px solid #fff;
+                margin: 0 8px;
+            }
+
+            #cart-btn:hover {
+                transform: translateY(-1px) scale(1.04);
+            }
+
+            #cart-count {
+                top: auto;
+                right: auto;
+                position: static;
+                background: #22223b;
+                color: #ffd700;
+                min-width: 26px;
+                height: 26px;
+                font-size: 0.92rem;
+                border-radius: 50%;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        /* CART ITEMS - MOBILE FIRST */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 8px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border-left: 4px solid var(--gold);
+            transition: all 0.3s ease;
+        }
+
+        .cart-item:hover {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transform: translateX(2px);
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            color: var(--main);
+            flex: 1;
+        }
+
+        .remove-from-cart {
+            background: #c9ada7;
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        .remove-from-cart:hover {
+            background: #8b0000;
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .remove-from-cart:active {
+            transform: scale(0.95);
+        }
+        
+        /* FOOTER - MOBILE FIRST */
+        footer {
+            background: var(--main);
+            color: var(--white);
+            text-align: center;
+            padding: 16px 8px 10px 8px;
+            font-size: 0.8em;
+            margin-top: 24px;
+        }
+        
+        @media (min-width: 600px) {
+            footer {
+                padding: 28px 0 18px 0;
+                font-size: 1.1em;
+                margin-top: 60px;
+            }
+        }
+
+        #toast-container {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+            align-items: center;
+        }
+
+        .toast {
+            background: #4caf50;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 0.95em;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            animation: slideUpFadeOut 2.5s forwards;
+            white-space: nowrap;
+        }
+
+        @keyframes slideUpFadeOut {
+            0% { opacity: 0; transform: translateY(20px) scale(0.9); }
+            15% { opacity: 1; transform: translateY(0) scale(1); }
+            85% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#menu">Menu</a>
+        <a href="#garnitures">Garnitures</a>
+        <a href="#boissons">Boissons</a>
+        <a href="#contact">Contact</a>
+        <a href="suivi.html" style="background:#4caf50;color:white;padding:8px 16px;border-radius:20px;text-decoration:none;font-weight:bold;">📍 Suivi de commande</a>
+        <a href="#" id="cart-btn" style="background:#ffd700;color:#22223b;padding:8px 18px;border-radius:24px;text-decoration:none;font-weight:bold;display:inline-flex;align-items:center;gap:8px;">
+            <span style="font-size:1.5em;">🛒</span>
+            <span style="font-size:1.1em;">Panier</span>
+            <span id="cart-count" style="background:#22223b;color:#ffd700;border-radius:50%;min-width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:0.9em;font-weight:bold;">0</span>
+        </a>
+    </nav>
+    
+    <header>
+        <div class="header-content" style="display:flex;flex-direction:column;align-items:center;">
+            <div style="display:flex;align-items:center;gap:18px;justify-content:center;">
+                <svg width="70" height="75" viewBox="0 0 160 170" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="80" cy="38" rx="38" ry="22" fill="#fff" stroke="#22223b" stroke-width="3"/>
+                    <rect x="52" y="50" width="56" height="18" rx="8" fill="#fff" stroke="#22223b" stroke-width="3"/>
+                    <rect x="28" y="70" width="6" height="40" rx="3" fill="#c9ada7" stroke="#22223b" stroke-width="2"/>
+                    <rect x="26.5" y="70" width="2" height="18" rx="1" fill="#fff" stroke="#22223b" stroke-width="1"/>
+                    <rect x="31" y="70" width="2" height="18" rx="1" fill="#fff" stroke="#22223b" stroke-width="1"/>
+                    <rect x="33.5" y="70" width="2" height="18" rx="1" fill="#fff" stroke="#22223b" stroke-width="1"/>
+                    <rect x="126" y="70" width="6" height="40" rx="3" fill="#c9ada7" stroke="#22223b" stroke-width="2"/>
+                    <ellipse cx="129" cy="70" rx="6" ry="8" fill="#fff" stroke="#22223b" stroke-width="2"/>
+                    <circle cx="80" cy="100" r="38" fill="#fff" stroke="#ffd700" stroke-width="6"/>
+                    <circle cx="80" cy="100" r="24" fill="none" stroke="#c9ada7" stroke-width="3"/>
+                </svg>
+                <h1 style="margin:0;">O'CAVIAR</h1>
+            </div>
+            <p>Le meilleur de la cuisine africaine, à portée de main !</p>
+            <div class="scrolling-text-container">
+                <p class="scrolling-text">⏰ Ouvert de 12h à 4h</p>
+            </div>
+            <a href="#menu" class="cta-btn">Découvrir le menu</a>
+        </div>
+    </header>
+    
+    <main>
+        <div id="cart-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(0,0,0,0.45);z-index:1000;align-items:center;justify-content:center;">
+            <div style="background:#fff;max-width:400px;width:90%;padding:28px 18px 18px 18px;border-radius:16px;box-shadow:0 8px 32px #0003;position:relative;">
+                <button id="close-cart" style="position:absolute;top:10px;right:16px;background:none;border:none;font-size:1.5em;cursor:pointer;">&times;</button>
+                <h2 style="margin-top:0;">Votre Panier</h2>
+                <div id="cart-items">Votre panier est vide.</div>
+                <button id="open-order" style="margin-top:18px;background:#ffd700;color:#22223b;border:none;padding:10px 28px;border-radius:24px;font-weight:bold;cursor:pointer;">Commander</button>
+            </div>
+        </div>
+        
+        <section class="chef-section">
+            <div class="chef-container">
+                <div class="chef-image">
+                    <img src="/assets/chef.jpg" alt="Chef O'Caviar">
+                </div>
+                <div class="chef-text">
+                    <h2>Notre Chef Djamila Bin's</h2>
+                    <p>Chez <strong>O'CAVIAR</strong>, chaque plat est préparé avec passion et savoir-faire africain pour offrir une expérience culinaire unique.</p>
+                    <p>Produits frais, hygiène irréprochable et goût exceptionnel : votre satisfaction est notre priorité.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="menu">
+            <h2>Nos Plats</h2>
+            <div id="plats-grid" class="menu-grid">
+                <div class="no-articles">Chargement des articles...</div>
+            </div>
+        </section>
+        
+        <section id="garnitures">
+            <h2>Nos Garnitures</h2>
+            <div id="garnitures-grid" class="menu-grid">
+                <div class="no-articles">Chargement des articles...</div>
+            </div>
+        </section>
+        
+        <section id="boissons">
+            <h2>Nos Boissons</h2>
+            <div id="boissons-grid" class="menu-grid">
+                <div class="no-articles">Chargement des articles...</div>
+            </div>
+        </section>
+        
+        <section id="contact">
+            <h2>Commander en ligne</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start;">
+                <h2 id="order-title" style="display:none;">Commander en ligne</h2>
+                <div id="order-block" style="display:none;flex-wrap: wrap; gap: 32px; align-items: flex-start;">
+                    <form id="order-form" style="flex:1; min-width: 260px; max-width: 420px; background: var(--accent); border-radius: 12px; padding: 24px; box-shadow: var(--shadow);">
+                        <h3 style="margin-top:0;">Votre commande</h3>
+                        <div id="order-summary" style="background:#fffbe6;border-radius:8px;padding:12px 10px 10px 10px;margin-bottom:18px;border:1px solid #ffd700;min-height:40px;">Votre panier est vide.</div>
+                        <label for="nom">Nom complet :</label><br>
+                        <input type="text" id="nom" name="nom" required style="width:100%;padding:8px;margin-bottom:12px;border-radius:6px;border:1px solid #ccc;"><br>
+                        <label for="tel">Téléphone :</label><br>
+                        <input type="tel" id="tel" name="tel" required style="width:100%;padding:8px;margin-bottom:12px;border-radius:6px;border:1px solid #ccc;"><br>
+                        <label for="adresse">Adresse de livraison :</label><br>
+                        <input type="text" id="adresse" name="adresse" required style="width:100%;padding:8px;margin-bottom:12px;border-radius:6px;border:1px solid #ccc;"><br>
+                        <label for="infos">Informations complémentaires :</label><br>
+                        <textarea id="infos" name="infos" rows="2" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;"></textarea><br>
+                        <label for="paiement" style="margin-top:10px;display:block;">Mode de paiement :</label>
+                        <select id="paiement" name="paiement" required style="width:100%;padding:8px;margin-bottom:12px;border-radius:6px;border:1px solid #ccc;">
+                            <option value="">--Choisir un mode de paiement--</option>
+                            <option value="Wave">Wave</option>
+                            <option value="Orange">Orange</option>
+                            <option value="Livraison">À la livraison</option>
+                        </select>
+                        <button type="submit" class="cta-btn" style="margin-top:14px;width:100%">Valider la commande</button>
+                        <div id="order-success" style="color:green;margin-top:12px;display:none;">Commande envoyée ! Nous vous contacterons rapidement.</div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div style="margin-bottom:10px;" id="footer-contact">
+            <strong>Adresse :</strong> <span id="footer-adresse">RUE L100, COCODY, ABIDJAN, Côte d'Ivoire</span><br>
+            <strong>Téléphone :</strong> <span id="footer-tel">07 18 18 65 65</span><br>
+            <strong>Email :</strong> <a href="mailto:ocaviar9@gmail.com" id="footer-email" style="color:#ffd700;">ocaviar9@gmail.com</a>
+        </div>
+        &copy; 2026 O'CAVIAR. Tous droits réservés.
+    </footer>
+    
+    <script>
+        // Global image fallback
+        (function(){
+            function attachFallback(img){
+                if(!img) return;
+                img.onerror = function(){ 
+                    this.onerror = null; 
+                    this.style.background = '#f0f0f0';
+                    this.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22100%22 height=%22100%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2214%22 fill=%22%23999%22%3EImage%3C/text%3E%3C/svg%3E';
+                };
+            }
+            document.addEventListener('DOMContentLoaded', ()=>{
+                document.querySelectorAll('img').forEach(attachFallback);
+                const obs = new MutationObserver(muts=>{
+                    muts.forEach(m=> m.addedNodes.forEach(n=>{ if(n.tagName==='IMG') attachFallback(n); else if(n.querySelectorAll) n.querySelectorAll('img').forEach(attachFallback); }));
+                });
+                obs.observe(document.body, {childList:true, subtree:true});
+            });
+        })();
+
+        // Load restaurant params
+        async function loadRestaurantParams() {
+            try {
+                const response = await fetch('/articles.json');
+                const data = await response.json();
+                const params = data.parametres;
+                if (params) {
+                    if (params.adresse) document.getElementById('footer-adresse').textContent = params.adresse;
+                    if (params.telephone) document.getElementById('footer-tel').textContent = params.telephone;
+                    if (params.email) {
+                        const emailLink = document.getElementById('footer-email');
+                        emailLink.textContent = params.email;
+                        emailLink.href = 'mailto:' + params.email;
+                    }
+                }
+            } catch (err) {
+                console.warn('Impossible de charger les paramètres:', err);
+            }
+        }
+        window.addEventListener('load', loadRestaurantParams);
+
+        // Cart management
+        const cartBtn = document.getElementById('cart-btn');
+        const cartModal = document.getElementById('cart-modal');
+        const closeCart = document.getElementById('close-cart');
+        const cartCount = document.getElementById('cart-count');
+        const cartItemsDiv = document.getElementById('cart-items');
+        let cart = JSON.parse(localStorage.getItem('cart')) || {};
+        const orderBlock = document.getElementById('order-block');
+        const orderTitle = document.getElementById('order-title');
+        const openOrderBtn = document.getElementById('open-order');
+        const orderForm = document.getElementById('order-form');
+
+        cartBtn.addEventListener('click', function(e){ e.preventDefault(); cartModal.style.display = 'flex'; });
+        closeCart.addEventListener('click', function(){ cartModal.style.display = 'none'; });
+
+        if (openOrderBtn) {
+            openOrderBtn.addEventListener('click', function() {
+                localStorage.setItem('cart', JSON.stringify(cart));
+                window.location.href = 'commande.html';
+            });
+        }
+
+        // Load menu articles
+        async function loadMenuArticles() {
+            try {
+                const resp = await fetch('/api/articles');
+                if(!resp.ok) throw new Error('Impossible de charger articles.json');
+                const data = await resp.json();
+                const plats = data.articles.filter(a => a.categorie === 'plats');
+                const garnitures = data.articles.filter(a => a.categorie === 'garnitures');
+                const boissons = data.articles.filter(a => a.categorie === 'boissons');
+
+                function render(list, id) {
+                    const container = document.getElementById(id);
+                    if(!container) return;
+                    if(!list.length) {
+                        container.innerHTML = '<div class="no-articles">Aucun article.</div>';
+                        return;
+                    }
+                    const placeholderImage = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2220%22 fill=%22%23999%22%3EImage%3C/text%3E%3C/svg%3E';
+                    container.innerHTML = list.map(a => {
+                        const imageUrl = a.image && a.image.trim() ? a.image : placeholderImage;
+                        return `
+                            <div class="card">
+                                <div class="image-container">
+                                    <img src="${imageUrl}" alt="${a.nom}" class="article-image" onerror="this.onerror=null;this.src='${placeholderImage}';">
+                                    <button class="add-to-cart" data-plat="${a.nom}">+</button>
+                                </div>
+                                <div class="article-content">
+                                    <div class="article-meta">
+                                        <h3>${a.nom}</h3>
+                                        <p>${a.description || ''}</p>
+                                    </div>
+                                    <div class="prix">${a.prix} FCFA</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+
+                render(plats, 'plats-grid');
+                render(garnitures, 'garnitures-grid');
+                render(boissons, 'boissons-grid');
+                setTimeout(() => {
+                    bindCartButtons();
+                    updateCartUI();
+                }, 100);
+            } catch (err) {
+                console.error('Erreur chargement articles:', err);
+            }
+        }
+
+        function bindCartButtons() {
+            document.querySelectorAll('.add-to-cart').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const plat = this.dataset.plat;
+
+                    if (e.target.classList.contains('minus-btn')) {
+                        if (cart[plat] > 0) {
+                            cart[plat]--;
+                            if (cart[plat] === 0) delete cart[plat];
+                            localStorage.setItem('cart', JSON.stringify(cart));
+                            updateCartUI();
+                        }
+                        return;
+                    }
+
+                    cart[plat] = (cart[plat] || 0) + 1;
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    updateCartUI();
+                    showToast(plat + " ajouté !");
+                    this.classList.add('added');
+                    setTimeout(() => this.classList.remove('added'), 250);
+                });
+            });
+        }
+
+        function showToast(message) {
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                document.body.appendChild(container);
+            }
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = '✅ ' + message;
+            container.appendChild(toast);
+            setTimeout(() => {
+                if (container.contains(toast)) container.removeChild(toast);
+            }, 2500);
+        }
+
+        function updateCartUI() {
+            const count = Object.values(cart).reduce((a, b) => a + b, 0);
+            cartCount.textContent = count;
+            if (Object.keys(cart).length === 0) {
+                cartItemsDiv.innerHTML = '<p style="text-align:center;color:#999;">Votre panier est vide.</p>';
+            } else {
+                const items = Object.entries(cart).map(([name, qty]) => `
+                    <div class="cart-item">
+                        <span class="cart-item-name">${name} <span style="color:var(--gold);font-weight:bold;">x${qty}</span></span>
+                        <button class="remove-from-cart" onclick="removeFromCart('${name.replace(/'/g, "\\'")}')">×</button>
+                    </div>
+                `).join('');
+                cartItemsDiv.innerHTML = items;
+            }
+
+            // Mettre à jour les compteurs individuels sur les boutons des articles
+            document.querySelectorAll('.add-to-cart').forEach(btn => {
+                const plat = btn.dataset.plat;
+                const qty = cart[plat] || 0;
+                if (qty > 0) {
+                    btn.innerHTML = `
+                        <span class="minus-btn" style="padding:4px 12px;font-size:1.4em;line-height:1;margin-top:-2px;">−</span>
+                        <span style="font-size:1.1em;font-weight:bold;min-width:14px;text-align:center;">${qty}</span>
+                        <span class="plus-btn" style="padding:4px 12px;font-size:1.2em;line-height:1;">+</span>
+                    `;
+                    btn.style.width = 'auto';
+                    btn.style.minWidth = '100px';
+                    btn.style.height = '44px';
+                    btn.style.padding = '0';
+                    btn.style.borderRadius = '22px';
+                    btn.style.background = '#22223b';
+                    btn.style.color = '#ffd700';
+                    btn.style.display = 'flex';
+                    btn.style.justifyContent = 'space-between';
+                    btn.style.alignItems = 'center';
+                } else {
+                    btn.innerHTML = '+';
+                    btn.style.width = '44px';
+                    btn.style.minWidth = '44px';
+                    btn.style.height = '44px';
+                    btn.style.padding = '0';
+                    btn.style.borderRadius = '50%';
+                    btn.style.background = 'var(--gold)';
+                    btn.style.color = 'var(--main)';
+                    btn.style.display = 'flex';
+                    btn.style.justifyContent = 'center';
+                    btn.style.alignItems = 'center';
+                }
+            });
+        }
+
+        function removeFromCart(itemName) {
+            if (cart[itemName]) {
+                cart[itemName]--;
+                if (cart[itemName] <= 0) {
+                    delete cart[itemName];
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartUI();
+            }
+        }
+
+        if (orderForm) {
+            orderForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const nom = document.getElementById('nom').value;
+                const tel = document.getElementById('tel').value;
+                const adresse = document.getElementById('adresse').value;
+                const paiement = document.getElementById('paiement').value;
+                if(Object.keys(cart).length === 0) { alert('Votre panier est vide.'); return; }
+                try {
+                    const response = await fetch('/api/order', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ nom, tel, adresse, paiement, panier: cart })
+                    });
+                    if(response.ok) document.getElementById('order-success').style.display = 'block';
+                } catch(e) { console.error('Erreur:', e); }
+            });
+        }
+
+        window.addEventListener('load', loadMenuArticles);
+    </script>
+</body>
+</html>

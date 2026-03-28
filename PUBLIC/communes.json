@@ -1,0 +1,88 @@
+{
+  "communes": [
+    {
+      "id": 1,
+      "nom": "Cocody",
+      "fraisLivraison": 500,
+      "latitude": 6.8276,
+      "longitude": -5.5456
+    },
+    {
+      "id": 2,
+      "nom": "Plateau",
+      "fraisLivraison": 500,
+      "latitude": 6.8244,
+      "longitude": -5.5471
+    },
+    {
+      "id": 3,
+      "nom": "Mandé",
+      "fraisLivraison": 600,
+      "latitude": 6.8450,
+      "longitude": -5.5400
+    },
+    {
+      "id": 4,
+      "nom": "Hydraform",
+      "fraisLivraison": 1000,
+      "latitude": 6.7200,
+      "longitude": -5.5800
+    },
+    {
+      "id": 5,
+      "nom": "Abobo",
+      "fraisLivraison": 1000,
+      "latitude": 6.9200,
+      "longitude": -5.5500
+    },
+    {
+      "id": 6,
+      "nom": "Yopougon",
+      "fraisLivraison": 1500,
+      "latitude": 6.8100,
+      "longitude": -5.6500
+    },
+    {
+      "id": 7,
+      "nom": "Attécoubé",
+      "fraisLivraison": 1000,
+      "latitude": 6.8620,
+      "longitude": -5.5250
+    },
+    {
+      "id": 8,
+      "nom": "Treichville",
+      "fraisLivraison": 800,
+      "latitude": 6.8700,
+      "longitude": -5.5350
+    },
+    {
+      "id": 9,
+      "nom": "Koumassi",
+      "fraisLivraison": 1000,
+      "latitude": 6.8000,
+      "longitude": -5.5100
+    },
+    {
+      "id": 10,
+      "nom": "Adjamé",
+      "fraisLivraison": 800,
+      "latitude": 6.8900,
+      "longitude": -5.5400
+    },
+    {
+      "id": 11,
+      "nom": "Délais",
+      "fraisLivraison": 800,
+      "latitude": 6.9050,
+      "longitude": -5.5300
+    },
+    {
+      "id": 12,
+      "nom": "Autre",
+      "fraisLivraison": 2000,
+      "latitude": 0,
+      "longitude": 0
+    }
+  ]
+}

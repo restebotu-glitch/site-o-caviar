@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commande - O'CAVIAR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main: #22223b;
+            --accent: #f2e9e4;
+            --highlight: #c9ada7;
+            --gold: #ffd700;
+            --white: #fff;
+            --shadow: 0 4px 24px rgba(0,0,0,0.10);
+            --success: #4caf50;
+            --error: #f44336;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: linear-gradient(120deg, #f2e9e4 0%, #fff 100%);
+            margin: 0;
+            padding: 20px;
+            color: var(--main);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header a {
+            color: var(--main);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .header h1 {
+            color: var(--gold);
+            margin: 10px 0;
+            font-size: 2em;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .section {
+            background: var(--white);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+        .section h2 {
+            color: var(--main);
+            border-bottom: 3px solid var(--gold);
+            padding-bottom: 12px;
+            margin-top: 0;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 8px;
+        }
+        .cart-item button {
+            background: none;
+            border: none;
+            color: var(--error);
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            padding: 10px 0;
+            border-top: 2px solid var(--gold);
+        }
+        .total {
+            color: var(--gold);
+            font-size: 1.3em;
+        }
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: 600;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 1em;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(255,215,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 12px;
+        }
+        .radio-group {
+            margin-top: 8px;
+        }
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+        }
+        .radio-group input[type="radio"] {
+            width: auto;
+            margin-right: 8px;
+        }
+        .btn-submit {
+            background: var(--gold);
+            color: var(--main);
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            font-size: 1.1em;
+            transition: background 0.3s;
+        }
+        .btn-submit:hover {
+            background: var(--highlight);
+        }
+        .btn-submit:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+            color: #999;
+        }
+        .alert {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            display: none;
+        }
+        .alert.error {
+            background: #ffebee;
+            color: var(--error);
+            border: 1px solid var(--error);
+            display: block;
+        }
+        .geo-button {
+            background: var(--main);
+            color: var(--white);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 6px;
+        }
+        .geo-button:hover {
+            background: var(--gold);
+            color: var(--main);
+        }
+        .geo-info {
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 8px;
+            font-size: 0.85em;
+            color: #1565c0;
+            display: none;
+        }
+        .commune-card {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 8px;
+            border-left: 4px solid var(--gold);
+        }
+        .frais-livraison {
+            color: var(--gold);
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        }
+        .alert.success {
+            background: #e8f5e9;
+            color: var(--success);
+            border: 1px solid var(--success);
+            display: block;
+        }
+        .back-btn {
+            display: inline-block;
+            background: var(--main);
+            color: var(--white);
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+        .back-btn:hover {
+            background: var(--highlight);
+            color: var(--main);
+        }
+        .empty-cart {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+        .empty-cart a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .subtotal-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            color: #555;
+        }
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← Retour au menu</a>
+        <h1>🛒 Votre Commande</h1>
+        <p>Finalisez votre commande ci-dessous</p>
+    </div>
+
+    <div class="container">
+        <!-- Panier -->
+        <div class="section">
+            <h2>Résumé du Panier</h2>
+            <div id="cart-display">
+                <div class="empty-cart">
+                    <p>Votre panier est vide.</p>
+                    <a href="index.html">Retour au menu</a>
+                </div>
+            </div>
+            <div id="cart-totals" style="display:none;">
+                <div class="subtotal-row">
+                    <span>Sous-total:</span>
+                    <span id="subtotal">0 FCFA</span>
+                </div>
+                <div class="subtotal-row">
+                    <span>Frais de livraison:</span>
+                    <span id="delivery-fee">0 FCFA</span>
+                </div>
+                <div class="price-row">
+                    <span>Total:</span>
+                    <span class="total" id="total">0 FCFA</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulaire de Commande -->
+        <div class="section">
+            <h2>Informations de Commande</h2>
+            <div id="alert-message" class="alert"></div>
+            <div id="hours-banner" style="display:none;border-radius:8px;padding:12px;margin-bottom:12px;font-weight:600;"></div>
+
+            <form id="order-form">
+                <!-- Informations Personnelles -->
+                <div class="form-group">
+                    <label for="nom">👤 Nom complet *</label>
+                    <input type="text" id="nom" name="nom" required placeholder="Ex: Jean Dupont">
+                </div>
+
+                <div class="form-group">
+                    <label for="telephone">☎️ Téléphone *</label>
+                    <input type="tel" id="telephone" name="telephone" required placeholder="Ex: +225 07 18 18 65 65">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">📧 Email</label>
+                    <input type="email" id="email" name="email" placeholder="Ex: email@example.com">
+                </div>
+
+                <!-- Mode de Livraison -->
+                <label>📍 Mode de livraison *</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="livraison" value="livraison" required onchange="onLivraisonChange()">
+                        Livraison à domicile
+                    </label>
+                    <label>
+                        <input type="radio" name="livraison" value="retrait" onchange="onLivraisonChange()">
+                        Retrait au restaurant (Gratuit)
+                    </label>
+                </div>
+
+                <!-- Sélection Commune (conditionnelle) -->
+                <div class="form-group" id="commune-group" style="display:none;">
+                    <label for="commune">🏘️ Votre commune *</label>
+                    <select id="commune" name="commune" required onchange="onCommuneChange()">
+                        <option value="">-- Sélectionner une commune --</option>
+                    </select>
+                    <div class="commune-card" id="commune-info" style="display:none;">
+                        <strong>Frais de livraison:</strong> <span class="frais-livraison" id="commune-frais">500 FCFA</span>
+                    </div>
+                </div>
+
+                <!-- Géolocalisation (conditionnelle) -->
+                <div class="form-group" id="geo-group" style="display:none;">
+                    <label>📍 Localisation GPS</label>
+                    <button type="button" id="geo-btn" class="geo-button" onclick="getGeolocation()">
+                        📍 Utiliser ma position
+                    </button>
+                    <div class="geo-info" id="geo-info">
+                        <strong>Position:</strong> <span id="geo-text">Non détectée</span>
+                    </div>
+                    <input type="hidden" id="latitude" name="latitude">
+                    <input type="hidden" id="longitude" name="longitude">
+                </div>
+
+                <!-- Adresse (conditionnelle) -->
+                <div class="form-group" id="adresse-group" style="display:none;">
+                    <label for="adresse">📬 Adresse de livraison détaillée *</label>
+                    <input type="text" id="adresse" name="adresse" placeholder="Ex: Rue L100, immeuble ABC, Apt 5">
+                </div>
+
+                <!-- Mode de Paiement -->
+                <label>💳 Mode de paiement *</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="paiement" value="wave" required>
+                        Wave
+                    </label>
+                    <label>
+                        <input type="radio" name="paiement" value="orange">
+                        Orange Money
+                    </label>
+                    <label>
+                        <input type="radio" name="paiement" value="livraison">
+                        À la livraison
+                    </label>
+                </div>
+
+                <!-- Instructions paiement et upload preuve -->
+                <div id="payment-instructions" style="display:none;margin-top:12px;background:#f9f9f9;padding:12px;border-radius:8px;">
+                    <p style="margin:6px 0 8px 0;font-weight:bold;">Payer via Wave ou Orange au numéro suivant :</p>
+                    <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+                        <div style="flex:1;font-weight:bold;">Wave / Orange: <span id="pay-number">0718186565</span></div>
+                        <button type="button" class="geo-button" onclick="copyPayNumber()">Copier le numéro</button>
+                    </div>
+
+                    <div style="margin-top:8px;">
+                        <label for="payer-number">Numéro depuis lequel vous avez payé</label>
+                        <input type="text" id="payer-number" name="payerNumber" placeholder="Ex: 0718186565">
+                    </div>
+
+                    <div style="margin-top:8px;">
+                        <label for="payment-proof">📷 Capture / preuve de paiement (optionnel)</label>
+                        <input type="file" id="payment-proof" name="paymentProof" accept="image/*">
+                    </div>
+                </div>
+
+                <!-- Instructions Spéciales -->
+                <div class="form-group">
+                    <label for="notes">📝 Instructions spéciales (optionnel)</label>
+                    <textarea id="notes" name="notes" rows="3" placeholder="Ex: Sans oignon, sauce à part, etc..."></textarea>
+                </div>
+
+                <!-- Conditions -->
+                <label style="margin-top:20px;">
+                    <input type="checkbox" id="conditions" name="conditions" required style="width:auto;margin-right:8px;">
+                    J'accepte les conditions de service
+                </label>
+
+                <button type="submit" class="btn-submit" id="submit-btn" title="Ajoutez au moins un article pour commander">Passer la commande</button>
+                <p id="empty-cart-message" style="color:#d32f2f;text-align:center;margin-top:10px;font-weight:bold;display:none;">
+                    ⚠️ Veuillez ajouter au moins un article au panier
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        let DELIVERY_FEE = 500; // Valeur par défaut
+        const PRICES = {
+            'Poulet frit': 3500,
+            'Poulet Mayo': 3500,
+            'Poulet sauté': 3500,
+            'Poisson braisé': 4000,
+            'Poisson frit': 4000,
+            'Mouton sauté': 4000,
+            'Pintade sautée': 4000,
+            'Pintade frite': 4000,
+            'Brochette d\'escargot': 2500,
+            'Brochette de viande': 2500,
+            'Attieke': 1000,
+            'Alloco': 1000,
+            'Fritte': 1000,
+            'Salade': 1000,
+            'Igname': 1000,
+            'Jus': 800,
+            'Sucreries': 800,
+            'Café': 800,
+            'Thé': 800,
+            'Boissons énergisantes': 1200
+        };
+
+        let cart = {};
+
+        // Charger les paramètres du serveur  
+        async function loadParameters() {
+            try {
+                const response = await fetch(`${API_BASE}/articles.json`);
+                if (response.ok) {
+                    const data = await response.json();
+                    DELIVERY_FEE = data.parametres?.fraisLivraison || 500;
+                    console.log('Frais de livraison chargés:', DELIVERY_FEE);
+                }
+            } catch (err) {
+                console.warn('Impossible de charger les paramètres, utilisation des valeurs par défaut');
+            }
+        }
+
+        let communes = [];
+        let userCommune = null;
+
+        // Charger les communes
+        async function loadCommunes() {
+            try {
+                const response = await fetch(`${API_BASE}/communes.json`);
+                if (response.ok) {
+                    const data = await response.json();
+                    communes = data.communes || [];
+                    populateCommunesDropdown();
+                    console.log('Communes chargées:', communes.length);
+                }
+            } catch (err) {
+                console.warn('Impossible de charger les communes');
+            }
+        }
+
+        // Remplir le dropdown des communes
+        function populateCommunesDropdown() {
+            const select = document.getElementById('commune');
+            communes.forEach(commune => {
+                const option = document.createElement('option');
+                option.value = commune.id;
+                option.textContent = `${commune.nom} (${commune.fraisLivraison} FCFA)`;
+                select.appendChild(option);
+            });
+        }
+
+        // Lors du changement de commune
+        function onCommuneChange() {
+            const communeId = document.getElementById('commune').value;
+            const commune = communes.find(c => c.id === parseInt(communeId));
+            
+            if (commune) {
+                userCommune = commune;
+                DELIVERY_FEE = commune.fraisLivraison;
+                document.getElementById('commune-frais').textContent = DELIVERY_FEE + ' FCFA';
+                document.getElementById('commune-info').style.display = 'block';
+                updateDisplay();
+                console.log('Commune sélectionnée:', commune.nom, 'Frais:', DELIVERY_FEE);
+            }
+        }
+
+        // Géolocalisation
+        function getGeolocation() {
+            if (!navigator.geolocation) {
+                alert('La géolocalisation n\'est pas supportée par votre navigateur.');
+                return;
+            }
+
+            const geoButton = document.getElementById('geo-btn');
+            if (geoButton) {
+                geoButton.textContent = '⏳ Localisation...';
+                geoButton.disabled = true;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude.toFixed(6);
+                    const lng = position.coords.longitude.toFixed(6);
+                    
+                    document.getElementById('latitude').value = lat;
+                    document.getElementById('longitude').value = lng;
+                    document.getElementById('geo-text').textContent = `${lat}, ${lng}`;
+                    document.getElementById('geo-info').style.display = 'block';
+                    
+                    if (geoButton) {
+                        geoButton.textContent = '✅ Position détectée';
+                        geoButton.disabled = false;
+                    }
+                    console.log('Position trouvée:', lat, lng);
+                },
+                function(error) {
+                    alert('Impossible d\'accéder à votre position. Erreur: ' + error.message);
+                    if (geoButton) {
+                        geoButton.textContent = '📍 Utiliser ma position';
+                        geoButton.disabled = false;
+                    }
+                }
+            );
+        }
+
+        // Changement mode livraison
+        function onLivraisonChange() {
+            const livraison = document.querySelector('input[name="livraison"]:checked')?.value;
+            const communeGroup = document.getElementById('commune-group');
+            const geoGroup = document.getElementById('geo-group');
+            const adresseGroup = document.getElementById('adresse-group');
+            const adresseInput = document.getElementById('adresse');
+            const communeInput = document.getElementById('commune');
+
+            if (livraison === 'livraison') {
+                communeGroup.style.display = 'block';
+                geoGroup.style.display = 'block';
+                adresseGroup.style.display = 'block';
+                adresseInput.required = true;
+                communeInput.required = true;
+            } else {
+                communeGroup.style.display = 'none';
+                geoGroup.style.display = 'none';
+                adresseGroup.style.display = 'none';
+                adresseInput.required = false;
+                communeInput.required = false;
+                DELIVERY_FEE = 0;
+                updateDisplay();
+            }
+        }
+
+        // Changement mode paiement -> afficher instructions si Wave/Orange
+        document.querySelectorAll('input[name="paiement"]').forEach(el => el.addEventListener('change', onPaymentChange));
+
+        function onPaymentChange() {
+            const method = document.querySelector('input[name="paiement"]:checked')?.value;
+            const instr = document.getElementById('payment-instructions');
+            if (method === 'wave' || method === 'orange') {
+                instr.style.display = 'block';
+            } else {
+                instr.style.display = 'none';
+            }
+        }
+
+        function copyPayNumber() {
+            const num = document.getElementById('pay-number').textContent.trim();
+            navigator.clipboard?.writeText(num).then(()=>{
+                alert('Numéro copié: ' + num);
+            }).catch(()=>{ alert('Impossible de copier le numéro automatiquement. Copiez-le manuellement: ' + num); });
+        }
+
+        // Charger le panier depuis localStorage
+        function loadCart() {
+            const saved = localStorage.getItem('cart');
+            if (saved) {
+                cart = JSON.parse(saved);
+            }
+            updateDisplay();
+        }
+
+        // Afficher le panier
+        function updateDisplay() {
+            const cartDisplay = document.getElementById('cart-display');
+            const cartTotals = document.getElementById('cart-totals');
+            const emptyCartMsg = document.getElementById('empty-cart-message');
+
+            if (Object.keys(cart).length === 0) {
+                cartDisplay.innerHTML = `
+                    <div class="empty-cart">
+                        <p>Votre panier est vide.</p>
+                        <a href="index.html">Retour au menu</a>
+                    </div>
+                `;
+                cartTotals.style.display = 'none';
+                document.getElementById('submit-btn').disabled = true;
+                emptyCartMsg.style.display = 'block';
+                return;
+            }
+
+            // Afficher les items
+            let html = '';
+            let subtotal = 0;
+            for (const plat in cart) {
+                const prix = PRICES[plat] || 0;
+                const sousTotal = prix * cart[plat];
+                subtotal += sousTotal;
+                html += `
+                    <div class="cart-item">
+                        <div style="flex:1;">
+                            <strong>${plat}</strong><br>
+                            ${prix} FCFA × ${cart[plat]}
+                        </div>
+                        <div style="text-align:right;margin-right:10px;">
+                            <strong>${sousTotal} FCFA</strong>
+                        </div>
+                        <button type="button" onclick="removeItem('${plat}')">🗑️</button>
+                    </div>
+                `;
+            }
+            cartDisplay.innerHTML = html;
+
+            // Calculer total avec frais de livraison
+            const livraison = document.querySelector('input[name="livraison"]:checked');
+            const total = livraison && livraison.value === 'livraison' ? subtotal + DELIVERY_FEE : subtotal;
+            const fee = livraison && livraison.value === 'livraison' ? DELIVERY_FEE : 0;
+
+            document.getElementById('subtotal').textContent = subtotal + ' FCFA';
+            document.getElementById('delivery-fee').textContent = fee + ' FCFA';
+            document.getElementById('total').textContent = total + ' FCFA';
+            cartTotals.style.display = 'block';
+            document.getElementById('submit-btn').disabled = false;
+            emptyCartMsg.style.display = 'none';
+        }
+
+        // Retirer un article
+        function removeItem(plat) {
+            if (cart[plat]) {
+                cart[plat]--;
+                if (cart[plat] <= 0) delete cart[plat];
+                updateDisplay();
+            }
+        }
+        window.removeItem = removeItem;
+
+        // Soumission du formulaire
+        document.getElementById('order-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Vérifier l'horaire d'ouverture
+            if (!isOpenHours()) {
+                showAlert('⚠️ Le service est actuellement fermé. Horaires d\'ouverture : 12h → 4h.', 'error');
+                return;
+            }
+
+            if (Object.keys(cart).length === 0) {
+                showAlert('❌ Impossible de commander : votre panier est vide. Veuillez ajouter au moins un article au menu.', 'error');
+                return;
+            }
+
+            const nom = document.getElementById('nom').value;
+            const telephone = document.getElementById('telephone').value;
+            const email = document.getElementById('email').value;
+            const livraison = document.querySelector('input[name="livraison"]:checked').value;
+            const adresse = document.getElementById('adresse').value || 'Retrait au restaurant';
+            const paiement = document.querySelector('input[name="paiement"]:checked').value;
+            const notes = document.getElementById('notes').value;
+            
+            // Récupérer les données de commune et position
+            const communeId = document.getElementById('commune').value;
+            const commune = communes.find(c => c.id === parseInt(communeId));
+            const communeName = commune ? commune.nom : 'Non spécifiée';
+            const latitude = document.getElementById('latitude').value || null;
+            const longitude = document.getElementById('longitude').value || null;
+
+            // Calculer le total
+            let subtotal = 0;
+            for (const plat in cart) {
+                subtotal += (PRICES[plat] || 0) * cart[plat];
+            }
+            const total = livraison === 'livraison' ? subtotal + DELIVERY_FEE : subtotal;
+
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Envoi en cours...';
+
+            try {
+                const response = await fetch(`${API_BASE}/api/order`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nom,
+                        telephone,
+                        email,
+                        livraison,
+                        commune: communeName,
+                        adresse,
+                        paiement,
+                        notes,
+                        latitude,
+                        longitude,
+                        panier: cart,
+                        total,
+                        subtotal,
+                        fraisLivraison: livraison === 'livraison' ? DELIVERY_FEE : 0,
+                        date: new Date().toLocaleString('fr-FR')
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert('✅ Commande envoyée avec succès !', 'success');
+                    
+                    // Afficher le numéro de commande
+                    showOrderSuccess(data.orderId);
+                    
+                    // Si paiement Wave/Orange: envoyer la preuve (si fournie)
+                    const paiementMethod = document.querySelector('input[name="paiement"]:checked')?.value;
+                    if ((paiementMethod === 'wave' || paiementMethod === 'orange')) {
+                        const payerNumber = document.getElementById('payer-number').value.trim();
+                        const proofInput = document.getElementById('payment-proof');
+                        if (payerNumber || (proofInput && proofInput.files && proofInput.files[0])) {
+                            // Envoyer FormData au endpoint proof
+                            try {
+                                const fd = new FormData();
+                                if (payerNumber) fd.append('paymentNumber', payerNumber);
+                                if (proofInput && proofInput.files[0]) fd.append('proof', proofInput.files[0]);
+                                await fetch(`${API_BASE}/api/order/${data.orderId}/proof`, { method: 'POST', body: fd });
+                            } catch (err) {
+                                console.warn('Impossible d\'envoyer la preuve:', err);
+                            }
+                        }
+                    }
+                    
+                    localStorage.removeItem('cart');
+                    cart = {};
+                    document.getElementById('order-form').reset();
+                    setTimeout(() => window.location.href = 'index.html', 3000);
+                } else {
+                    showAlert('❌ Erreur: ' + (data.message || 'Impossible de traiter la commande'), 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Passer la commande';
+                }
+            } catch (err) {
+                showAlert('❌ Erreur serveur: ' + err.message, 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Passer la commande';
+            }
+        });
+
+        function showOrderSuccess(orderId) {
+            const alertDiv = document.getElementById('alert-message');
+            alertDiv.innerHTML = `
+                <div style="background:#e8f5e9;border:2px solid #4caf50;border-radius:8px;padding:15px;margin-top:10px;">
+                    <p style="color:#4caf50;font-weight:bold;margin:0 0 10px 0;">✅ Commande validée avec succès !</p>
+                    <p style="color:#333;margin:10px 0;"><strong>Votre numéro de commande:</strong></p>
+                    <p style="background:#fff;border:2px solid #4caf50;padding:12px;text-align:center;font-size:1.3em;font-weight:bold;color:#4caf50;margin:10px 0;border-radius:6px;">
+                        #${orderId}
+                    </p>
+                    <p style="color:#666;font-size:0.9em;margin:10px 0;">
+                        📍 Vous pouvez <a href="suivi.html" style="color:#4caf50;text-decoration:none;font-weight:bold;">suivre votre commande en temps réel</a>
+                    </p>
+                    <p style="color:#666;font-size:0.9em;margin:10px 0;">
+                        📞 Nous vous contacterons rapidement sur le numéro que vous avez fourni.
+                    </p>
+                </div>
+            `;
+            alertDiv.style.display = 'block';
+            try {
+                // Sauvegarder le dernier numéro de commande pour le suivi automatique
+                localStorage.setItem('lastOrderId', String(orderId));
+                localStorage.setItem('lastOrderTime', String(Date.now()));
+            } catch (e) {
+                console.warn('Impossible de sauvegarder lastOrderId dans localStorage', e);
+            }
+        }
+
+        function showAlert(message, type) {
+            const alertDiv = document.getElementById('alert-message');
+            alertDiv.textContent = message;
+            alertDiv.className = 'alert ' + type;
+            alertDiv.style.display = 'block';
+            // Les messages d'erreur restent visibles, les succès disparaissent
+            if (type === 'success') {
+                setTimeout(() => alertDiv.style.display = 'none', 3000);
+            }
+        }
+
+        // Vérifier si le restaurant est ouvert: 12:00 - 04:00 (inclus)
+        function isOpenHours() {
+            const now = new Date();
+            const h = now.getHours();
+            // Ouvert si heure >= 12 (midi) ou heure < 4 (minuit-4h)
+            return (h >= 12) || (h < 4);
+        }
+
+        // Mettre à jour l'état de la page selon les horaires
+        function updateHoursBanner() {
+            const banner = document.getElementById('hours-banner');
+            const submitBtn = document.getElementById('submit-btn');
+            if (isOpenHours()) {
+                banner.style.display = 'block';
+                banner.style.background = '#e8f5e9';
+                banner.style.color = '#2e7d32';
+                banner.style.border = '1px solid #4caf50';
+                banner.textContent = "✅ Le service est ouvert — nous acceptons les commandes (12h → 4h).";
+                if (Object.keys(cart).length > 0) submitBtn.disabled = false;
+            } else {
+                banner.style.display = 'block';
+                banner.style.background = '#fff3e0';
+                banner.style.color = '#e65100';
+                banner.style.border = '1px solid #fb8c00';
+                banner.textContent = "⚠️ Le service est fermé. Horaires d'ouverture : 12h → 4h. Revenez pendant ces heures pour commander.";
+                submitBtn.disabled = true;
+            }
+        }
+
+        // Charger le panier au démarrage et mettre à jour la bannière horaires
+        Promise.all([loadParameters(), loadCommunes()]).then(() => {
+            loadCart();
+            updateHoursBanner();
+            // Vérifier périodiquement l'heure (toutes les 30s) pour mettre à jour l'état
+            setInterval(updateHoursBanner, 30000);
+        });
+    </script>
+</body>
+</html>

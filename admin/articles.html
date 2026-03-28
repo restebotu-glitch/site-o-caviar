@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gérer Articles - O'CAVIAR Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main: #22223b;
+            --accent: #f2e9e4;
+            --gold: #ffd700;
+            --white: #fff;
+            --shadow: 0 4px 24px rgba(0,0,0,0.10);
+            --success: #4caf50;
+            --error: #f44336;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            color: var(--main);
+            overflow-x: hidden;
+        }
+        .header {
+            background: var(--main);
+            color: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header h1 {
+            margin: 0;
+            color: var(--gold);
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            background: var(--gold);
+            color: var(--main);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            background: var(--main);
+            color: var(--gold);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            overflow-x: hidden;
+        }
+        .filter-bar {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-bar select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Montserrat', Arial, sans-serif;
+        }
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .article-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease;
+            position: relative;
+        }
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .article-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+            border-bottom: 2px solid var(--gold);
+        }
+        .article-content {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .article-name {
+            font-weight: bold;
+            color: var(--main);
+            margin: 0 0 8px 0;
+            font-size: 1.20em;
+        }
+        .article-price {
+            color: var(--gold);
+            font-weight: bold;
+            font-size: 1.3em;
+            margin: 8px 0;
+        }
+        .article-category {
+            display: inline-block;
+            background: var(--accent);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-bottom: 10px;
+            align-self: flex-start;
+        }
+        .article-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: auto;
+            align-items: center;
+        }
+        .btn-small {
+            flex: 1;
+            padding: 10px;
+            font-size: 0.85em;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        .btn-small.edit {
+            background: var(--gold);
+            color: var(--main);
+        }
+        .btn-small.edit:hover {
+            background: var(--main);
+            color: var(--gold);
+        }
+        .btn-small.delete {
+            background: var(--error);
+            color: var(--white);
+        }
+        .btn-small.delete:hover {
+            opacity: 0.85;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 1em;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(255,215,0,0.1);
+        }
+        .image-preview {
+            width: 100%;
+            max-width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin: 10px 0;
+            background: var(--accent);
+        }
+        .btn-submit {
+            background: var(--main);
+            color: var(--white);
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn-submit:hover {
+            background: var(--gold);
+            color: var(--main);
+        }
+        .alert {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        .alert.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        .no-articles {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        /* RESPONSIVE - MOBILE */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.2em;
+                width: 100%;
+                margin: 0;
+            }
+
+            .btn-group {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 12px;
+                font-size: 0.9em;
+            }
+
+            .container {
+                padding: 0;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px;
+            }
+
+            .filter-bar select {
+                width: 100%;
+            }
+
+            .article-actions {
+                flex-direction: row;
+            }
+
+            .btn-small {
+                width: auto;
+            }
+
+            .modal-content {
+                padding: 20px;
+                width: 95%;
+            }
+        }
+
+        /* Removed min-width 350 grid forcing to prevent mobile squashing */
+
+        @media (min-width: 768px) {
+            .header {
+                align-items: center;
+            }
+
+            .btn-group {
+                gap: 12px;
+            }
+
+            .filter-bar {
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1>📝 Gestion des Articles</h1>
+        </div>
+        <div class="btn-group">
+            <a href="index.html" class="btn">← Admin</a>
+            <a href="dashboard.html" class="btn">📊 Dashboard</a>
+            <button class="btn" onclick="openAddModal()">➕ Ajouter Article</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="alert" class="alert"></div>
+
+        <div style="display:none;text-align:center;padding:60px 20px;color:#666;" id="loading-msg">
+            <h3>Chargement...</h3>
+            <p>Veuillez patienter</p>
+        </div>
+
+        <div class="filter-bar">
+            <label style="margin: 0;">Filtrer par catégorie :</label>
+            <select id="category-filter" onchange="filterArticles()">
+                <option value="">Tous les articles</option>
+                <option value="plats">Plats</option>
+                <option value="garnitures">Garnitures</option>
+                <option value="boissons">Boissons</option>
+            </select>
+        </div>
+
+        <div class="articles-grid" id="articles-grid">
+            <div class="no-articles">Chargement des articles...</div>
+        </div>
+    </div>
+
+    <!-- Modal d'édition/ajout -->
+    <div id="article-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h2 id="modal-title">Ajouter un Article</h2>
+            <div id="modal-alert" class="alert"></div>
+            
+            <form id="article-form">
+                <div class="form-group">
+                    <label for="nom">Nom de l'article *</label>
+                    <input type="text" id="nom" name="nom" required placeholder="Ex: Poulet frit">
+                </div>
+
+                <div class="form-group">
+                    <label for="categorie">Catégorie *</label>
+                    <select id="categorie" name="categorie" required>
+                        <option value="">-- Sélectionner une catégorie --</option>
+                        <option value="plats">Plats</option>
+                        <option value="garnitures">Garnitures</option>
+                        <option value="boissons">Boissons</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="prix">Prix (FCFA) *</label>
+                    <input type="number" id="prix" name="prix" required placeholder="Ex: 3500" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="3" placeholder="Description du plat..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="fraisLivraison">Frais de livraison (FCFA)</label>
+                    <input type="number" id="fraisLivraison" name="fraisLivraison" placeholder="Ex: 500" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="image">📸 Photo du plat</label>
+                    <input type="file" id="image" name="image" accept="image/*">
+                    <img id="image-preview" class="image-preview" style="display:none;">
+                </div>
+
+                <button type="submit" class="btn-submit">💾 Enregistrer</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+
+        let articles = [];
+        let currentEditId = null;
+
+        // Vérifier authentification
+        function checkAuth() {
+            const token = sessionStorage.getItem('admin_token');
+            if (!token) {
+                console.warn('⚠️ Non authentifié - redirection vers connexion');
+                setTimeout(() => {
+                    window.location.href = '/admin/index.html';
+                }, 500);
+                return false;
+            }
+            return true;
+        }
+
+        // Montrer le chargement
+        function showLoading() {
+            const loadingMsg = document.getElementById('loading-msg');
+            const grid = document.getElementById('articles-grid');
+            if (loadingMsg) loadingMsg.style.display = 'block';
+            if (grid) grid.style.display = 'none';
+        }
+
+        // Cacher le chargement
+        function hideLoading() {
+            const loadingMsg = document.getElementById('loading-msg');
+            const grid = document.getElementById('articles-grid');
+            if (loadingMsg) loadingMsg.style.display = 'none';
+            if (grid) grid.style.display = 'grid';
+        }
+
+        // Charger les articles
+        async function loadArticles() {
+            try {
+                const response = await fetch(`${API_BASE}/articles.json`);
+                if (!response.ok) throw new Error('Erreur de chargement');
+                const data = await response.json();
+                articles = data.articles;
+                displayArticles(articles);
+                return Promise.resolve();
+            } catch (err) {
+                console.error('Erreur:', err);
+                showAlert('Erreur lors du chargement des articles', 'error');
+                return Promise.resolve();
+            }
+        }
+
+        // Afficher les articles
+        function displayArticles(articlesToShow) {
+            const grid = document.getElementById('articles-grid');
+            
+            if (articlesToShow.length === 0) {
+                grid.innerHTML = '<div class="no-articles">Aucun article trouvé.</div>';
+                return;
+            }
+
+            let html = '';
+            articlesToShow.forEach(article => {
+                const fraisText = (article.fraisLivraison !== undefined && article.fraisLivraison !== null) ? `${article.fraisLivraison} FCFA` : '—';
+                const svgFallback = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22280%22 height=%22200%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22280%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2216%22 fill=%22%23999%22%3EImage%3C/text%3E%3C/svg%3E';
+                html += `
+                    <div class="article-card">
+                        <img src="${article.image}" alt="${article.nom}" class="article-image" onerror="this.src='${svgFallback}'">
+                        <div class="article-content">
+                            <h3 class="article-name">${article.nom}</h3>
+                            <span class="article-category">${article.categorie}</span>
+                            <div class="article-price">${article.prix} FCFA</div>
+                            <div style="font-size:0.9em;color:#444;margin-top:6px;">Frais livraison: ${fraisText}</div>
+                            <p style="font-size:0.9em;color:#666;margin:8px 0;">${article.description || ''}</p>
+                            <div class="article-actions">
+                                <button class="btn-small edit" onclick="editArticle(${article.id})">✏️ Modifier</button>
+                                <button class="btn-small delete" onclick="deleteArticle(${article.id})">🗑️ Supprimer</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = html;
+        }
+
+        // Filtrer les articles
+        function filterArticles() {
+            const category = document.getElementById('category-filter').value;
+            const filtered = category 
+                ? articles.filter(a => a.categorie === category)
+                : articles;
+            displayArticles(filtered);
+        }
+
+        // Ouvrir modal d'ajout
+        function openAddModal() {
+            currentEditId = null;
+            document.getElementById('modal-title').textContent = 'Ajouter un Article';
+            document.getElementById('article-form').reset();
+            document.getElementById('image-preview').style.display = 'none';
+            document.getElementById('image').value = '';
+            document.getElementById('article-modal').classList.add('active');
+        }
+
+        // Éditer article
+        function editArticle(id) {
+            const article = articles.find(a => a.id === id);
+            if (!article) return;
+
+            currentEditId = id;
+            document.getElementById('modal-title').textContent = 'Modifier l\'Article';
+            document.getElementById('nom').value = article.nom;
+            document.getElementById('categorie').value = article.categorie;
+            document.getElementById('prix').value = article.prix;
+                document.getElementById('description').value = article.description;
+                document.getElementById('fraisLivraison').value = article.fraisLivraison !== undefined ? article.fraisLivraison : '';
+            
+            // Réinitialiser le champ fichier
+            document.getElementById('image').value = '';
+
+            // Afficher l'aperçu de l'image existante
+            if (article.image) {
+                const preview = document.getElementById('image-preview');
+                preview.src = article.image;
+                preview.style.display = 'block';
+            }
+            
+            document.getElementById('article-modal').classList.add('active');
+        }
+
+        // Supprimer article
+        async function deleteArticle(id) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) return;
+
+            try {
+                const token = sessionStorage.getItem('admin_token');
+                const headers = token ? { 'Authorization': 'Bearer ' + token } : {};
+                const response = await fetch(`${API_BASE}/api/article/${id}`, {
+                    method: 'DELETE',
+                    headers
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    articles = articles.filter(a => a.id !== id);
+                    displayArticles(articles);
+                    showAlert('Article supprimé avec succès', 'success');
+                } else {
+                    showAlert(data.message || 'Erreur lors de la suppression', 'error');
+                }
+            } catch (err) {
+                showAlert('Erreur serveur: ' + err.message, 'error');
+            }
+        }
+
+        // Soumettre formulaire
+        document.getElementById('article-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formDataObj = new FormData();
+            formDataObj.append('nom', document.getElementById('nom').value);
+            formDataObj.append('categorie', document.getElementById('categorie').value);
+            formDataObj.append('prix', parseInt(document.getElementById('prix').value));
+            formDataObj.append('description', document.getElementById('description').value);
+            const fraisVal = document.getElementById('fraisLivraison').value;
+            if (fraisVal !== undefined && fraisVal !== null && fraisVal !== '') {
+                formDataObj.append('fraisLivraison', parseInt(fraisVal));
+            }
+            
+            // Ajouter le fichier image si présent
+            const imageInput = document.getElementById('image');
+            if (imageInput.files && imageInput.files[0]) {
+                formDataObj.append('image', imageInput.files[0]);
+            }
+
+            try {
+                let url = `${API_BASE}/api/article`;
+                let method = 'POST';
+
+                if (currentEditId) {
+                    url += '/' + currentEditId;
+                    method = 'PUT';
+                }
+
+                const token = sessionStorage.getItem('admin_token');
+                const headers = token ? { 'Authorization': 'Bearer ' + token } : {};
+                const response = await fetch(url, {
+                    method: method,
+                    headers,
+                    body: formDataObj
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    loadArticles();
+                    closeModal();
+                    showAlert(currentEditId ? 'Article modifié avec succès' : 'Article ajouté avec succès', 'success');
+                } else {
+                    showModalAlert(data.message || 'Erreur', 'error');
+                }
+            } catch (err) {
+                showModalAlert('Erreur serveur: ' + err.message, 'error');
+            }
+        });
+
+        // Afficher aperçu image
+        document.getElementById('image').addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const preview = document.getElementById('image-preview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        function closeModal() {
+            document.getElementById('article-modal').classList.remove('active');
+            document.getElementById('modal-alert').style.display = 'none';
+        }
+
+        function showAlert(message, type) {
+            const alert = document.getElementById('alert');
+            alert.textContent = message;
+            alert.className = 'alert ' + type;
+            setTimeout(() => alert.style.display = 'none', 3000);
+        }
+
+        function showModalAlert(message, type) {
+            const alert = document.getElementById('modal-alert');
+            alert.textContent = message;
+            alert.className = 'alert ' + type;
+        }
+
+        window.addEventListener('click', e => {
+            const modal = document.getElementById('article-modal');
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Initialiser la page
+        window.addEventListener('load', function() {
+            showLoading();
+            if (checkAuth() !== false) {
+                loadArticles().then(() => {
+                    hideLoading();
+                }).catch(() => {
+                    hideLoading();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

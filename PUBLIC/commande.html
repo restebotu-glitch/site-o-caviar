@@ -366,36 +366,51 @@
     <script>
         const API_BASE = window.location.origin;
         let DELIVERY_FEE = 500; // Valeur par défaut
-        const PRICES = {
-            'Poulet frit': 3500,
-            'Poulet Mayo': 3500,
-            'Poulet sauté': 3500,
-            'Poisson braisé': 4000,
-            'Poisson frit': 4000,
-            'Mouton sauté': 4000,
-            'Pintade sautée': 4000,
-            'Pintade frite': 4000,
-            'Brochette d\'escargot': 2500,
-            'Brochette de viande': 2500,
-            'Attieke': 1000,
-            'Alloco': 1000,
-            'Fritte': 1000,
-            'Salade': 1000,
-            'Igname': 1000,
-            'Jus': 800,
-            'Sucreries': 800,
-            'Café': 800,
-            'Thé': 800,
-            'Boissons énergisantes': 1200
-        };
+        let PRICES = {}; // Sera chargé dynamiquement
 
         let cart = {};
 
-        // Charger les paramètres du serveur (maintenant on utilise uniquement les quartiers)
-        async function loadParameters() {
-            // Les frais de livraison sont maintenant gérés par quartier
-            // Cette fonction reste pour compatibilité
-            console.log('Paramètres chargés depuis loadCommunes');
+        // Charger les articles depuis l'API
+        async function loadArticles() {
+            try {
+                const response = await fetch(`${API_BASE}/api/articles`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        // Créer l'objet PRICES à partir des articles
+                        PRICES = {};
+                        data.articles.forEach(article => {
+                            PRICES[article.nom] = article.prix;
+                        });
+                        console.log('Articles chargés:', data.articles.length, 'PRICES:', PRICES);
+                    }
+                }
+            } catch (err) {
+                console.warn('Impossible de charger les articles, utilisation des prix par défaut');
+                // Fallback aux prix hardcodés si l'API échoue
+                PRICES = {
+                    'Poulet frit': 3500,
+                    'Poulet Mayo': 3500,
+                    'Poulet sauté': 3500,
+                    'Poisson braisé': 4000,
+                    'Poisson frit': 4000,
+                    'Mouton sauté': 4000,
+                    'Pintade sautée': 4000,
+                    'Pintade frite': 4000,
+                    'Brochette d\'escargot': 2500,
+                    'Brochette de viande': 2500,
+                    'Attieke': 1000,
+                    'Alloco': 1000,
+                    'Fritte': 1000,
+                    'Salade': 1000,
+                    'Igname': 1000,
+                    'Jus': 800,
+                    'Sucreries': 800,
+                    'Café': 800,
+                    'Thé': 800,
+                    'Boissons énergisantes': 1200
+                };
+            }
         }
 
         let communes = [];
@@ -910,7 +925,7 @@
         }
 
         // Charger le panier au démarrage et mettre à jour la bannière horaires
-        Promise.all([loadParameters(), loadCommunes(), checkServiceStatus()]).then(() => {
+        Promise.all([loadArticles(), loadParameters(), loadCommunes(), checkServiceStatus()]).then(() => {
             loadCart();
             updateHoursBanner();
             // Vérifier périodiquement l'heure (toutes les 30s) pour mettre à jour l'état

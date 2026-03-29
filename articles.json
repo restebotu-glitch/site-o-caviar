@@ -3,10 +3,11 @@
     {
       "id": 1,
       "nom": "Poulet frit ",
-      "prix": 7777,
+      "prix": 1000,
       "categorie": "plats",
-      "description": "Modifié via interface admin (test)",
-      "image": "/uploads/recipe-1771609677684-267650477.png"
+      "description": "POULET",
+      "image": "/uploads/recipe-1771609677684-267650477.png",
+      "fraisLivraison": 0
     },
     {
       "id": 3,
